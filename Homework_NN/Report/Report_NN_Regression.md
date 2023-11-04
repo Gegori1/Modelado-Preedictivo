@@ -1,12 +1,26 @@
-<h1 style="text-align: center;">Linear LDA for classification</h1>
+<h1 style="text-align: center;">Neural Networks</h1>
+
+<!-- \title{Neural Networks}
+\maketitle -->
+
 
 <p style="text-align: center;">Predictive modeling</p>
+
+<!-- \begin{center}
+Predictive modeling
+\end{center} -->
 
 ![](https://upload.wikimedia.org/wikipedia/commons/2/2d/Logo-ITESO-Vertical-SinFondo-png.png)
 
 <p style="text-align: center;">Gregorio Alvarez</p>
 
+<!-- \begin{center}
+Gregorio Alvarez
+\end{center} -->
+
 <div style="page-break-after: always"></div>
+
+<!-- \newpage -->
 
 ## Introduction
 
@@ -48,7 +62,7 @@ The data used for this analysis is the [Appliances Energy Prediction](https://ar
 | rv1         | random variable 1, unrelated to other variables                  | continuous  |
 | rv2         | random variable 2, unrelated to other variables                  | continuous  |
 
-For this report, the date and random variables were removed from the dataset. The target variable was constructed from the addition of the Appliances and lights variables
+For this report, the date and random variables were removed from the dataset. The target variable was constructed from the addition of the Appliances and lights variables. The remaining variables were used as input variables for the models.
 
 <div style="page-break-after: always"></div>
 
@@ -56,7 +70,7 @@ For this report, the date and random variables were removed from the dataset. Th
 
 ### Analysis
 
-A pairplot was generated to examine the distribution of variables and their relationships with each other. The pairplot revealed that the majority of the variables had a unimodal distribution, several independent variables exhibited high correlation, while the dependent variable was highly skewed and showed little to no correlation with the other input variables.
+A pairplot was generated to examine the distribution of variables and their relationships with each other. The pairplot revealed that the majority of the variables had a unimodal distribution, several independent variables exhibited high correlation, while the dependent variable was highly skewed and showed little to no correlation with the input variable.
 
 ![Pairplot](pairplot.png)
 
@@ -68,14 +82,14 @@ To gain a more accurate understanding of the degree of correlation between the v
 ![Correlation plot](correlation.png)
 
 Figure 2: Correlation plot
-
+Gegori1/DL_Specialization
 ### Benchmark models
 
-Seven linear models were trained to check their predictive power. 
+Seven linear models were trained to check their predictive power.
 
 - Linear regression, with and without standardization:
 
-In the first place a linear regression model was fitted with the predictors without transformation. It was found that the model was slower to train, than the one with standardization transformation, but the predictive power remained unchanged. Therefore, this transformation was applied to the rest of the models. 
+A linear regression model was fitted with the predictors and no transformation. It was found that the model was slower to train, than the one with standardization transformation, but the predictive power remained unchanged. Therefore, this transformation was applied to the rest of the models. 
 
 ![Linear model. Real vs Predicted](real_predicted_lr.png)
 
@@ -83,7 +97,7 @@ Figure 3: Linear model. It can be observed that the large skewness present in th
 
 - Linear regression, with variable selection:
 
-A variable selection by highest correlation between pairs, with a threshold of 0.7, was applied to the data. Which decreased the number of features by a factor of 3. The selected variables were: RH_2, RH_5, T8, RH_9, Press_mm_hg, RH_out, Windspeed, Visibility, Tdewpoint. As can be seen in the correlation_plot, the majority of these variables, had low linear correlation with respect to the dependent variable, indicating a possible drop of predictive power from the remaining variables.
+A variable selection by highest correlation between pairs, with a threshold of 0.7, was applied to the data. Which decreased the number of features by a factor of 3. The selected variables were: `RH_2, RH_5, T8, RH_9, Press_mm_hg, RH_out, Windspeed, Visibility, Tdewpoint`. As can be seen in the correlation_plot, the majority of these variables, had low linear correlation with respect to the dependent variable, indicating a possible drop of predictive power from the remaining variables.
 
 - Partial Least Squares (PLS) Regression:
 
@@ -105,7 +119,7 @@ A lasso regression, with default $\alpha$ parameter, was used to fit the data.
 
 - Results
 
-| Model | Test score | Train score | Test RMSE | Train RMSE |
+| Model | Test R2 | Train R2 | Test RMSE | Train RMSE |
 |-------|------------|-------------|-----------|------------|
 | Regression original data | 0.1544 | 0.1537 | 93.8604 | 96.5442 |
 | Regression normalized data | 0.1544 | 0.1537 | 93.8604 | 96.5442 |
@@ -115,11 +129,47 @@ A lasso regression, with default $\alpha$ parameter, was used to fit the data.
 | Regression root square transformed target | 0.1427 | 0.1383 | 94.5070 | 97.4197 |
 | Lasso regression | 0.1533 | 0.1523 | 93.9259 | 96.6244 |
 
-As can be seen from the previous table, the regression with the original data, the normalized data and the PLS regression have the highest accuracy.
+As can be seen from the previous table, the regression with the original data, the normalized data and the PLS regression have the highest accuracy, being the PLS regression the one with the highest interpretability thanks to the reduce number of components and the possibily of interpreting the coefficients of the components.
 
 ### Neural Network models:
 
-A first approximation was obtained
+A neural network network with 400 hidden neurons, hyperbolic tangent activation function, Adam optimizer and mean squared error as loss function was trained. The model was trained for 400 epochs, with  a learning rate of 0.01. To avoid saturation of the activation function, the data was normalized using the standardization method. To avoid overfitting, an early stop condition was set when the validation metric did not improve in 10 epochs. The following table shows the architecture of the neural network.
+
+![Table with number of parameters and architecture](nn_architecture.png)
+
+Figure 5: Table with number of parameters and architecture
+
+The following table shows the results obtained from the neural network model:
+
+| Model | Test R2 | Train R2 | Test RMSE | Train RMSE |
+|-------|------------|-------------|-----------|------------|
+| Neural network | 0.1544 | 0.1537 | 93.8604 | 96.5442 |
+
+Since the train and test scores are further apart a second experiment with a train, test and validation set was performed. The results are shown in the following table:
+
+| Model | Test R2 | Train R2 | Validation score | Test RMSE | Train RMSE | Validation RMSE |
+|-------|------------|-------------|------------------|-----------|------------|-----------------|
+| Neural network | 0.1544 | 0.1537 | 0.1544 | 93.8604 | 96.5442 | 93.8604 |
+
+- Grid search
+
+A grid search, with a ten fold, was performed to find the optimal hyperparameters for the neural network. The following table shows the results obtained from the grid search:
+
+
+| Model | Test R2 | Train R2 | Test RMSE | Train RMSE | Best parameters |
+|-------|------------|-------------|-----------|------------|-----------------|
+
+### Discussion
+
+All the neural network models outperformed the linear models by a large margin. It was found that the neural network needs high variability in the model in order to improve on the test and evaluation set and could be related to the high complexity of the problem. The grid search process indicate that the optimal hyperparameters were used previous to this process.
+
+
+
+## Conclusions
+
+It was proven that the Neural Networks can handle the high dimensionality of the data, and highly skewed output. In future studies, it would be interesting to study the output variable as a classification-regresssion problem, to handle the high skewness of the output variable. It would also be interesting to study the effect of the variable selection with PLS and logistic regression applied to these variables, as it is expected that the predictive power of the model would increase, due to the reduction of the dimensionality of the problem.
+
+
 
 
 <!-- No variables were removed from the dataset, coming from the assumption, that the NN would chose the right variables 
