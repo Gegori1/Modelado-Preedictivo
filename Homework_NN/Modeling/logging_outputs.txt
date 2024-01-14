@@ -1,0 +1,3 @@
+
+C:\Users\alber\OneDrive - ITESO\Gregorio Alberto\Master\Dritte\Modelado-Preedictivo\Homework_NN\sdk\neural_networks\log_config.py - 2024-01-02 19:10:18,760 - neural_networks.Utils - ERROR - Exception occurred in function 'find_root_dir' of module 'neural_networks.Utils': Could not find the config file 'tone' after looking at maximum depth.
+C:\Users\alber\OneDrive - ITESO\Gregorio Alberto\Master\Dritte\Modelado-Preedictivo\Homework_NN\sdk\neural_networks\log_config.py - 2024-01-02 19:10:18,761 - neural_networks.Utils - ERROR - Exception occurred in function 'read_config' of module 'neural_networks.Utils': unsupported operand type(s) for /: 'NoneType' and 'str'

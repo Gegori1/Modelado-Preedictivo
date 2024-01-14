@@ -1,0 +1,16 @@
+data:
+  path: data
+  train_file: energydata_complete.csv
+  test_file:  test_data.csv
+
+model:
+  path: model
+  name: "neural_network"
+  type: "regressor"
+  version: "0.0.1"
+  random_state: 42
+  split: [0.7, 0.2, 0.1]
+
+transformations:
+  train_path: data/trainc
+  test_path: data/test
